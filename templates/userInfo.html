@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>用户信息查询和修改</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+<body>
+    <div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="page-header">
+				<h1>
+					在线测试系统 | <span>用户信息查询及修改</span>
+				</h1>
+			</div>
+			<div class="row clearfix">
+				<div class="col-md-6 column">
+                    <h3>查询信息</h3>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>
+									名称
+								</th>
+								<th>
+									信息
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									账号
+								</td>
+								<td>
+									{{ uInfo.id }}
+								</td>
+
+							</tr>
+							<tr>
+								<td>
+									姓名
+								</td>
+								<td>
+									{{ uInfo.name }}
+								</td>
+							</tr>
+							<tr>
+								<td>
+									邮箱
+								</td>
+								<td>
+									{{ uInfo.Email }}
+								</td>
+
+							</tr>
+							<tr>
+								<td>
+									电话
+								</td>
+								<td>
+									{{ uInfo.tel }}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-6 column">
+                    <h3>修改信息</h3>
+					<form role="form" method="post">
+                    {{ form.hidden_tag() }}
+						<div class="form-group">
+							 <label for="exampleInputName1">姓名</label>
+                             {{ form.updateName(class="form-control") }}
+                             <input Type="Submit" Name="action" Value="修改姓名" class="btn btn-default"/>
+						</div>
+						<div class="form-group">
+							 <label for="exampleInputEmail1">邮箱</label>
+                             {{ form.updateEmain(class="form-control") }}
+                             <input Type="Submit" Name="action" Value="修改邮箱" class="btn btn-default"/>
+						</div>
+                        <div class="form-group">
+							 <label for="exampleInputTel1">电话</label>
+                             {{ form.updateTel(class="form-control") }}
+                             <input Type="Submit" Name="action" Value="修改电话" class="btn btn-default"/>
+						</div>
+                        <input Type="Submit" Name="action" Value="返回主界面" class="btn btn-success login-field"/>
+                        {% for message in get_flashed_messages() %}
+                            <div class="alert-info">{{ message }}</div>
+                        {% endfor %}
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

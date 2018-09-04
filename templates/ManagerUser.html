@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>管理界面</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+      <script type="text/javascript" src="js/jquery.js"></script>
+      <script type="timedeletes/javascript" src="web/static/timedeletes"></script>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+     <div class="container">
+	<div class="row clearfix">
+     <form role="form" method="post">
+         {{ form.hidden_tag() }}
+         <div class="col-md-12 column">
+			<div class="page-header">
+				<h1>
+					在线测试系统 | 管理界面
+				</h1>
+			</div>
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<ol class="breadcrumb">
+						<li class="active">
+							 <a href="{{ url_for('web.adminMainUserManager') }}">用户管理</a>
+						</li>
+						<li>
+							 <a href="{{ url_for('web.adminMainTitleManager') }}">题库管理</a>
+						</li>
+                        <li>
+							 <a href="{{ url_for('web.adminMainSearchResult') }}">成绩查询</a>
+						</li>
+{#                        <li>#}
+{#							 <a href="{{ url_for('web.adminMainManagerTest') }}">管理考试</a>#}
+{#						</li>#}
+                        <li>
+							 <a href="{{ url_for('web.adminMain') }}">主界面</a>
+						</li>
+					</ol>
+					<ul class="nav nav-pills">
+                        <li role="presentation" class="active"><a href="{{ url_for('web.managerUser', page=1) }}">用户操作</a></li>
+                        <li role="presentation"><a href="{{ url_for('web.managerAdmin', page=1) }}">管理员操作</a></li>
+
+                    </ul>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>
+									账号
+								</th>
+								<th>
+									用户名
+								</th>
+								<th>
+									邮箱
+								</th>
+                                <th>
+									电话
+								</th>
+                                <th>
+									性别
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+                        {% for shownum in showNum%}
+							<tr>
+								<td>
+									{{ shownum.id }}
+								</td>
+								<td>
+									{{ shownum.name }}
+								</td>
+								<td>
+									{{ shownum.Email }}
+								</td>
+								<td>
+									{{ shownum.tel }}
+								</td>
+                                <td>
+									{{ shownum.sex }}
+								</td>
+							</tr>
+                        {% endfor %}
+						</tbody>
+					</table>
+					<ul class="pagination">
+						<li>
+							 <a href="{{ url_for('web.managerUser', page= page - 1)}}">Prev</a>
+						</li>
+                     {% for i in pageSe %}
+                         <li>
+							 <a href="{{ url_for('web.managerUser', page=i) }}">{{ i }}</a>
+						</li>
+                     {% endfor %}
+						<li>
+							 <a href="{{ url_for('web.managerUser', page= page + 1)}}">Next</a>
+						</li>
+					</ul>
+
+					<form role="form" method="post">
+						<div class="form-group">
+							 <label for="exampleInputNo">账户</label>
+                            {{ form.userAccount(class="form-control") }}
+						</div>
+                        <input Type="Submit" Name="action" Value="删除用户" class="btn btn-default"/>
+
+                    </form>
+                     {% for message in get_flashed_messages() %}
+                            <div class="alert-info">{{ message }}</div>
+                        {% endfor %}
+                </div>
+
+            </div>
+         </div>
+     </form>
+	</div>
+</div>
+  </body>
+</html>

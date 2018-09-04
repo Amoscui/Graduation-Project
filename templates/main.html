@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>主界面</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+    <![endif]-->
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+  </head>
+  <body>
+     <div class="container">
+	<div class="row clearfix">
+     <form role="form" method="post">
+         {{ form.hidden_tag() }}
+         <div class="col-md-12 column ">
+			<ul class="nav navbar-nav navbar-right bg-warning">
+                {% if current_user.is_authenticated() %}
+				<li>
+					 <a href="#">当前用户：{{ current_user.id }}</a>
+				</li>
+                <li>
+                     <a href="{{ url_for('web.userInfo') }}">信息查询及修改</a>
+                </li>
+				<li>
+					 <a href="{{ url_for('web.logout') }}">退出</a>
+				</li>
+                {% else %}
+                    <li><a href="{{ url_for('web.userLogin') }}">没有用户登录</a>
+                {% endif %}
+			</ul>
+			<div class="page-header">
+				<h1>
+					在线测试系统
+				</h1>
+			</div>
+			<div class="row clearfix">
+				<div class="col-md-10 column">
+                    <div class="container">
+                        <div class="row clearfix">
+                            <div class="col-md-4 column">
+                                <label >考试时间</label>
+                            </div>
+                            <div class="col-md-4 column">
+
+                            </div>
+                            <div class="col-md-4 column">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress progress-striped">
+                        <div class="progress-bar progress-bar-success progress-bar-striped active" aria-valuenow="{{ progress }}" style="width: 50%; min-width: 2em;">
+                            <span class="sr-only">{{ progress }}</span>
+                        </div>
+                        <div class="progress-bar progress-bar-info progress-bar-striped active" aria-valuenow="{{ progress }}" style="width: 25%">
+                            <span class="sr-only">{{ progress }}</span>
+                        </div>
+                        <div class="progress-bar progress-bar-warning progress-bar-striped active" aria-valuenow="{{ progress }}" style="width: 20%">
+                            <span class="sr-only">{{ progress }}</span>
+                        </div>
+                        <div class="progress-bar progress-bar-danger progress-bar-striped active" aria-valuenow="{{ progress }}" style="width: 5%">
+                            <span class="sr-only">{{ progress }}</span>
+                        </div>
+					</div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                {% if flag is equalto(1) %}
+                                    <p>计算机考试</p>
+                                {% else %}
+                                    <p>无考试</p>
+                                {% endif %}
+                            </h3>
+                        </div>
+						<div class="panel-body">
+                           <p>
+                            <h2>考前请仔细阅读：<br /></h2>
+                            <h4>&emsp;&emsp;普通考试题目为单选题、多选题和判断题，共1小时<br /></h4>
+                                &emsp;&emsp;&emsp;&emsp;1-20为单选题，每题1分<br />
+                                &emsp;&emsp;&emsp;&emsp;21-40为多选题，每题3分 <br />
+                                &emsp;&emsp;&emsp;&emsp;41-60为判断题，每题1分 <br />
+                                &emsp;&emsp;&emsp;&emsp;满分100分 <br />
+                            <h4>&emsp;&emsp;专项测试可以自行选择题目类型和题型，共30分钟<br /></h4>
+                                &emsp;&emsp;&emsp;&emsp;每题1分<br />
+                                &emsp;&emsp;&emsp;&emsp;共20题 <br />
+                            <h3>&emsp;&emsp;选择答案后按下一题继续答题，按上一题修改检查，可输入题号跳转<br /></h3>
+                            <h3>&emsp;&emsp;完成答题后按下交卷结束考试<br /></h3>
+                           </p>
+
+						</div>
+
+					</div>
+
+				</div>
+				<div class="col-md-2 column">
+					<div class="list-group">
+                         <a href="#" class="list-group-item active">考试科目选择</a>
+                        <input Type="Submit" Name="action" Value="计算机" class="list-group-item btn btn-default btn-block" />
+                        <a href="#" class="list-group-item active">普通考试</a>
+                        <input Type="Submit" Name="action" Value="开始普通考试" class="list-group-item btn btn-default btn-block" onclick="startTimer();"/>
+                        <a href="#" class="list-group-item active">专项测试</a>
+                        {% if isChoose == 1  %}
+                            <button Name="action" Value="单项选择题" class="btn btn-default list-group-item active"> 单项选择题 </button>
+                            {% for i in choice %}
+                                 <button Name="action" class="btn btn-default list-group-item"  value={{ i }}> {{ i }} </button>
+                            {% endfor %}
+                        {% else %}
+                            <button Name="action" Value="单项选择题" class="btn btn-default list-group-item"> 单项选择题 </button>
+                        {% endif %}
+                        {% if isChoose == 2  %}
+                            <button Name="action" Value="多项选择题" class="btn btn-default list-group-item active"> 多项选择题 </button>
+                            {% for i in choice %}
+                                 <button Name="action" class="btn btn-default list-group-item"  value={{ i }}> {{ i }} </button>
+                            {% endfor %}
+                        {% else %}
+                            <button Name="action" Value="多项选择题" class="btn btn-default list-group-item"> 多项选择题 </button>
+                        {% endif %}
+                        {% if isChoose == 3  %}
+                            <button Name="action" Value="判断题" class="btn btn-default list-group-item active"> 判断题 </button>
+                            {% for i in choice %}
+                                 <button Name="action" class="btn btn-default list-group-item"  value={{ i }}> {{ i }} </button>
+                            {% endfor %}
+                        {% else %}
+                            <button Name="action" Value="判断题" class="btn btn-default list-group-item"> 判断题 </button>
+                        {% endif %}
+
+                        <input Type="Submit" Name="action" Value="开始专项考试" class="list-group-item btn btn-default btn-block" onclick="startTimer();"/>
+                        <a href="#" class="list-group-item active">考试操作</a>
+                        <input Type="Submit" Name="action" Value=" 交卷 "  class="list-group-item btn btn-default btn-block" disabled="disabled"/>
+                        <a href="#" class="list-group-item active ">考试记录</a>
+                        <input Type="Submit" Name="action" Value="成绩查询" class="list-group-item btn btn-default btn-block" />
+					</div>
+                    {% for message in get_flashed_messages() %}
+                            <div class="alert-info">{{ message }}</div>
+                        {% endfor %}
+				</div>
+			</div>
+		</div>
+     </form>
+	</div>
+</div>
+  </body>
+</html>
+

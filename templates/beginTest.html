@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>主界面</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]><![endif]-->
+
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+
+
+    <script type="text/javascript">
+        var value = 0;
+        var c;
+
+
+        if (localStorage['c'] === undefined || localStorage['c'] === 0){
+            c = 0;
+        } else {
+            c = JSON.parse(localStorage.getItem('c'));
+        }
+
+
+        $(function () {
+            function increment() {
+
+                $("#prog").css("width", value + "%").text(value + "%");
+                if (value >= 0 && value <= 50) {
+                    $("#prog").addClass("progress-bar-success");
+                }
+                else if (value >= 50 && value <= 75) {
+                    $("#prog").removeClass("progress-bar-success");
+                    $("#prog").addClass("progress-bar-info");
+
+                }
+                else if (value >= 75 && value <= 90) {
+                    $("#prog").removeClass("progress-bar-info");
+                    $("#prog").addClass("progress-bar-warning");
+                }
+                else if (value >= 90 && value < 100) {
+                    $("#prog").removeClass("progress-bar-warning");
+                    $("#prog").addClass("progress-bar-danger");
+                } else {
+                    $('#btn').trigger("click");
+                    localStorage.clear();
+                    return;
+                }
+                localStorage.clear();
+                localStorage['c'] = c;
+                value = parseFloat((c / 36).toFixed(2));
+                c += 1;
+
+                setTimeout(increment, 1000);
+            }
+            increment();
+
+        });
+
+    </script>
+
+
+  </head>
+  <body>
+     <div class="container">
+	<div class="row clearfix">
+     <form role="form" method="post">
+         {{ form.hidden_tag() }}
+         <div class="col-md-12 column">
+			<ul class="nav navbar-nav navbar-right bg-warning">
+                {% if current_user.is_authenticated() %}
+				<li>
+					 <a href="#">当前用户：{{ current_user.id }}</a>
+				</li>
+                <li>
+                     <a href="#">信息查询及修改</a>
+                </li>
+				<li>
+					 <a href="#">退出</a>
+				</li>
+                {% else %}
+                    <li><a href="#">没有用户登录</a>
+                {% endif %}
+			</ul>
+			<div class="page-header">
+				<h1>
+					在线测试系统
+				</h1>
+			</div>
+			<div class="row clearfix">
+				<div class="col-md-10 column">
+                    <div class="container">
+                        <div class="row clearfix">
+                            <div class="col-md-4 column">
+                                <label >考试时间</label>
+                            </div>
+                            <div class="col-md-4 column">
+                            </div>
+                            <div class="col-md-4 column">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div" class="progress progress-striped">
+						<div id="prog" class="progress-bar active" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+						</div>
+					</div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                {% if flag is equalto(1) %}
+                                    <p>计算机考试</p>
+                                {% else %}
+                                    <p>无考试</p>
+                                {% endif %}
+                            </h3>
+                        </div>
+						<div class="panel-body">
+                        <p>
+                            <h3>
+                                {{ page }}、{{ titleSe[page - 1].content }}:
+                            </h3>
+                        </p>
+
+                        <div class="list-group">
+                        </div>
+                            {% if page not in judgeNum %}
+                                {% if clinkANum % 2 == 1 %}
+                                    <button Name="action" Value="A" class="btn btn-default list-group-item active">A {{ titleSe[page - 1].chooseA }}</button>
+                                {% else %}
+                                    <button Name="action" Value="A" class="btn btn-default list-group-item">A {{ titleSe[page - 1].chooseA }}</button>
+                                {% endif %}
+                                {% if clinkBNum % 2 == 1 %}
+                                    <button Name="action" Value="B" class="btn btn-default list-group-item active">B {{ titleSe[page - 1].chooseB }}</button>
+                                {% else %}
+                                    <button Name="action" Value="B" class="btn btn-default list-group-item">B {{ titleSe[page - 1].chooseB }}</button>
+                                {% endif %}
+                                {% if clinkCNum % 2 == 1 %}
+                                    <button Name="action" Value="C" class="btn btn-default list-group-item active">C {{ titleSe[page - 1].chooseC }}</button>
+                                {% else %}
+                                    <button Name="action" Value="C" class="btn btn-default list-group-item ">C {{ titleSe[page - 1].chooseC }}</button>
+                                {% endif %}
+                                {% if clinkDNum % 2 == 1 %}
+                                    <button Name="action" Value="D" class="btn btn-default list-group-item active">D {{ titleSe[page - 1].chooseD }}</button>
+                                {% else %}
+                                    <button Name="action" Value="D" class="btn btn-default list-group-item">D {{ titleSe[page - 1].chooseD }}</button>
+                                {% endif %}
+                            {% endif %}
+                            {% if page in judgeNum %}
+                                {% if clinkTrue == 1 %}
+                                    <button Name="action" Value="True" class="btn btn-default list-group-item active"> True </button>
+                                {% else %}
+                                    <button Name="action" Value="True" class="btn btn-default list-group-item"> True </button>
+                                {% endif %}
+                                {% if clinkFalse == 1 %}
+                                    <button Name="action" Value="False" class="btn btn-default list-group-item active"> False </button>
+                                {% else %}
+                                    <button Name="action" Value="False" class="btn btn-default list-group-item"> False </button>
+                                {% endif %}
+
+                            {% endif %}
+						</div>
+
+					</div>
+					<nav aria-label="...">
+                        <ul class="pager" id="ul">
+                            <li><button Name="action" Value="首页" class="btn btn-default">首页</button></li>
+                            {% if page is equalto(1) %}
+                                <li><a disabled="disable"> 上一题</a></li>
+                            {% else %}
+{#                                {% set clinkANum = 0 %}#}
+{#                                {% set clinkBNum = 0 %}#}
+{#                                {% set clinkCNum = 0 %}#}
+{#                                {% set clinkDNum = 0 %}#}
+{#                                {% set clinkTrue = 0 %}#}
+{#                                {% set clinkFalse = 0 %}#}
+                                <li><button Name="action" Value="上一题" class="btn btn-default">上一题</button></li>
+                            {% endif %}
+                            {% if page is equalto(60) %}
+                                <li><a disabled="disable"> 下一题</a></li>
+                            {% else %}
+                                <li><button Name="action" Value="下一题" class="btn btn-default">下一题</button></li>
+{#                                <li><a href="{{ url_for('web.beginTest', page = page + 1) }}">下一题</a></li>#}
+                            {% endif %}
+                            <li><button Name="action" Value="尾页" class="btn btn-default">尾页</button></li>
+{#                            <li><a href="{{ url_for('web.beginTest', page = 60) }}">尾页</a></li>#}
+                            <label for="pagen">页号</label>
+                            {{ form.gotoPage }}
+                            <input Type="Submit" id="pager" Name="action" Value="跳转" class="btn btn-sm" onclick="judgeData()"/>
+                        </ul>
+                    </nav>
+				</div>
+				<div class="col-md-2 column">
+					<div class="list-group">
+                         <a href="#" class="list-group-item disabled active">考试科目选择</a>
+                        <input Type="Submit" Name="action" Value="计算机" class="list-group-item btn btn-default btn-block" disabled="disabled"/>
+                        <a href="#" class="list-group-item active">普通考试</a>
+                        <input Type="Submit" Name="action" Value="开始普通考试" class="list-group-item btn btn-default btn-block" disabled="disabled" onclick="startTimer();"/>
+                        <a href="#" class="list-group-item active">专项测试</a>
+                        <input Type="Submit" Name="action" Value="单项选择题"  class="list-group-item btn btn-default btn-block" disabled="disabled"/>
+                        <input Type="Submit" Name="action" Value="多项选择题"  class="list-group-item btn btn-default btn-block" disabled="disabled"/>
+                        <input Type="Submit" Name="action" Value="判断题"  class="list-group-item btn btn-default btn-block" disabled="disabled"/>
+                        <input Type="Submit" Name="action" Value="开始专项考试" class="list-group-item btn btn-default btn-block" disabled="disabled" onclick="startTimer();"/>
+                        <a href="#" class="list-group-item active">考试操作</a>
+                        <input Type="Submit" id="btn" Name="action" Value=" 交卷 " class="list-group-item btn btn-default btn-block" onclick="btn_click()"/>
+                        <a href="#" class="list-group-item active disabled">考试记录</a>
+                        <input Type="Submit" Name="action" Value="成绩查询" class="list-group-item btn btn-default btn-block" disabled="disabled"/>
+					</div>
+                    {% for message in get_flashed_messages() %}
+                            <div class="alert-info">{{ message }}</div>
+                        {% endfor %}
+				</div>
+			</div>
+		</div>
+     </form>
+	</div>
+</div>
+  </body>
+</html>
+<script>
+    function btn_click() {
+        localStorage.clear();
+    }
+</script>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>主界面</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+
+      <script type="text/javascript" src="/web/static/timedeletes.js"></script>
+      <script type="text/javascript" src="js/jquery.js"></script>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+     <div class="container">
+	<div class="row clearfix">
+         <div class="col-md-12 column ">
+			<ul class="nav navbar-nav navbar-right bg-warning">
+                {% if current_user.is_authenticated() %}
+				<li>
+					 <a href="#">当前用户：{{ current_user.id }}</a>
+				</li>
+                <li>
+                     <a href="{{ url_for('web.userInfo') }}">信息查询及修改</a>
+                </li>
+				<li>
+					 <a href="{{ url_for('web.logout') }}">退出</a>
+				</li>
+                {% else %}
+                    <li><a href="{{ url_for('web.userLogin') }}">没有用户登录</a>
+                {% endif %}
+			</ul>
+			<div class="page-header">
+				<h1>
+					在线测试系统
+				</h1>
+			</div>
+			<div class="row clearfix">
+				<div class="col-md-10 column">
+
+                        <table class="table table-responsive">
+						<thead>
+							<tr>
+                                <th>
+                                    查询记录编号
+                                </th>
+								<th>
+									测试记录编号
+								</th>
+								<th>
+									用户
+								</th>
+                                <th>
+                                    考试类型
+                                </th>
+								<th>
+									分数
+								</th>
+                                <th>
+									测试开始时间
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+                        {% for shownum in searchResult%}
+							<tr>
+								<td>
+									{{ shownum[0] }}
+								</td>
+								<td>
+									{{ shownum[5] }}
+								</td>
+								<td>
+									{{ shownum[1] }}
+								</td>
+                                <td>
+									{{ shownum[7] }}
+								</td>
+                                <td>
+									{{ shownum[6] }}
+								</td>
+                                <td>
+									{{ shownum[3] }}
+								</td>
+							</tr>
+                        {% endfor %}
+						</tbody>
+					</table>
+                    <ul class="pagination">
+						<li>
+							 <a href="{{ url_for('web.searchScore', page= page - 1)}}">Prev</a>
+						</li>
+                     {% for i in pageSe %}
+                         <li>
+                             <a href="{{ url_for('web.searchScore', page=i) }}">{{ i }}</a>
+                         </li>
+                     {% endfor %}
+						<li>
+							 <a href="{{ url_for('web.searchScore', page= page + 1)}}">Next</a>
+						</li>
+					</ul>
+                </div>
+				<div class="col-md-2 column">
+					<div class="list-group">
+                        <a href="#" class="list-group-item disabled active">考试科目选择</a>
+                        <input Type="Submit" Name="action" Value="计算机" class="list-group-item btn btn-default btn-block" />
+                        <a href="#" class="list-group-item active">普通考试</a>
+                        <input Type="Submit" Name="action" Value="开始普通考试" class="list-group-item btn btn-default btn-block" disabled="disabled" onclick="startTimer();"/>
+                        <a href="#" class="list-group-item active">专项测试</a>
+                        <input Type="Submit" Name="action" Value="单项选择题"  class="list-group-item btn btn-default btn-block" disabled="disabled"/>
+                        <input Type="Submit" Name="action" Value="多项选择题"  class="list-group-item btn btn-default btn-block" disabled="disabled"/>
+                        <input Type="Submit" Name="action" Value="判断题"  class="list-group-item btn btn-default btn-block" disabled="disabled"/>
+                        <input Type="Submit" Name="action" Value="开始专项考试" class="list-group-item btn btn-default btn-block" disabled="disabled" onclick="startTimer();"/>
+                        <a href="#" class="list-group-item active">考试操作</a>
+                        <input Type="Submit" id="btn" Name="action" Value=" 交卷 " class="list-group-item btn btn-default btn-block" disabled="disabled" onclick="btn_click()"/>
+                        <a href="#" class="list-group-item active disabled">考试记录</a>
+                        <input Type="Submit" Name="action" Value="成绩查询" class="list-group-item btn btn-default btn-block"/>
+                        <a href="{{ url_for('web.main', page=1)}}" class="list-group-item btn btn-default">返回主界面</a>
+					</div>
+                    {% for message in get_flashed_messages() %}
+                            <div class="alert-info">{{ message }}</div>
+                        {% endfor %}
+				</div>
+			</div>
+		</div>
+     </div>
+	</div>
+  </body>
+</html>

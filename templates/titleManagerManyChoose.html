@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>管理界面</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+
+
+	<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+	<!-- <script type="text/javascript" src="js/back-endPage.js"></script> --> <!-- 后台分页 -->
+    <script type="text/javascript" src="/TestSystem/web/AdminLTE/js/front-endPage.js"></script><!-- 前台分页 -->
+    <script type="text/javascript" src="/TestSystem/web/AdminLTE/dist/js/shujv2.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="/TestSystem/web/AdminLTE/dist/css/table.css">
+
+
+      <script type="text/javascript" src="js/jquery.js"></script>
+      <script type="timedeletes/javascript" src="web/static/timedeletes"></script>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+     <div class="container">
+	<div class="row clearfix">
+     <form role="form" method="post">
+         {{ form.hidden_tag() }}
+         <div class="col-md-12 column">
+			<div class="page-header">
+				<h1>
+					在线测试系统 | 管理界面
+				</h1>
+			</div>
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<ul class="breadcrumb">
+
+						<li>
+							 <a href="{{ url_for('web.adminMainUserManager') }}">用户管理</a>
+						</li>
+						<li class="active">
+							 <a href="{{ url_for('web.adminMainTitleManager') }}">题库管理</a>
+						</li>
+                        <li>
+							 <a href="{{ url_for('web.adminMainSearchResult') }}">成绩查询</a>
+						</li>
+{#                        <li>#}
+{#							 <a href="{{ url_for('web.adminMainManagerTest') }}">管理考试</a>#}
+{#						</li>#}
+                        <li>
+							 <a href="{{ url_for('web.adminMain') }}">主界面</a>
+						</li>
+					</ul>
+                    <ul class="nav nav-pills">
+                        <li role="presentation"><a href="{{ url_for('web.titleOneChoose', page=1) }}">单选题操作</a></li>
+                        <li role="presentation" class="active"><a href="{{ url_for('web.titleManyChoose', page=1) }}">多选题操作</a></li>
+                        <li role="presentation"><a href="{{ url_for('web.titleJudge', page=1) }}">判断题操作</a></li>
+                    </ul>
+
+                    <div class="col-md-8 column">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>
+									题目编号
+								</th>
+								<th>
+									题目
+								</th>
+								<th>
+									选项A
+								</th>
+                                <th>
+									选项B
+								</th>
+                                <th>
+									选项C
+								</th>
+                                <th>
+									选项D
+								</th>
+                                <th>
+                                    答案
+                                </th>
+                                <th>
+                                    类别
+                                </th>
+							</tr>
+						</thead>
+{#                        {% for i in pageSe %}#}
+{#                            {% if i not in remainNum  %}#}
+{#                                {%  set showNum.titleNo = null %}#}
+{#                                {%  set showNum.num = null %}#}
+{#                                {%  set showNum.content = null %}#}
+{#                                {%  set showNum.choose = null %}#}
+{#                                {%  set showNum.answer = null %}#}
+{#                            {% endif %}#}
+{#                        {% endfor %}#}
+						<tbody>
+                        {% for shownum in showNum%}
+							<tr>
+								<td>
+									{{ shownum.titleNo }}
+								</td>
+								<td>
+									{{ shownum.content }}
+								</td>
+								<td>
+									{{ shownum.chooseA }}
+								</td>
+								<td>
+									{{ shownum.chooseB }}
+								</td>
+                                <td>
+									{{ shownum.chooseC }}
+								</td>
+                                <td>
+									{{ shownum.chooseD }}
+								</td>
+                                <td>
+									{{ shownum.answer }}
+								</td>
+                                <td>
+                                    {{ shownum.category }}
+                                </td>
+							</tr>
+                        {% else %}
+                            <tr>
+                              <td>
+
+                              </td>
+                              <td>
+
+                              </td>
+                              <td>
+
+                              </td>
+                              <td>
+
+                              </td>
+                              <td>
+
+                              </td>
+                            </tr>
+                        {% endfor %}
+						</tbody>
+					</table>
+					<ul class="pagination">
+						<li>
+							 <a href="{{ url_for('web.titleManyChoose', page= page - 1)}}">Prev</a>
+						</li>
+                     {% for i in pageSe %}
+                         <li>
+							 <a href="{{ url_for('web.titleManyChoose', page=i) }}">{{ i }}</a>
+						</li>
+                     {% endfor %}
+						<li>
+							 <a href="{{ url_for('web.titleManyChoose', page= page + 1)}}">Next</a>
+						</li>
+					</ul>
+                    </div>
+				<div class="col-md-4 column">
+                    <h2>
+						多项选择题
+					</h2>
+					<form role="form" method="post">
+						<div class="form-group">
+							 <label for="exampleInputNo">题目编号</label>
+                            {{ form.manyChooseTitleNo(class="form-control") }}
+						</div>
+                        <div class="form-group">
+							 <label for="exampleInputContent">题目</label>
+                            {{ form.manyChooseContent(class="form-control") }}
+                            <input Type="Submit" Name="action" Value="修改多选题题目" class="btn btn-default"/>
+						</div>
+                        <div class="form-group">
+							 <label for="exampleInputOption">选项A</label>
+                            {{ form.manyChooseChooseA(class="form-control") }}
+                            <input Type="Submit" Name="action" Value="修改多选题选项A" class="btn btn-default"/>
+						</div>
+                         <div class="form-group">
+							 <label for="exampleInputOption">选项B</label>
+                            {{ form.manyChooseChooseB(class="form-control") }}
+                             <input Type="Submit" Name="action" Value="修改多选题选项B" class="btn btn-default"/>
+						</div>
+                         <div class="form-group">
+							 <label for="exampleInputOption">选项C</label>
+                            {{ form.manyChooseChooseC(class="form-control") }}
+                             <input Type="Submit" Name="action" Value="修改多选题选项C" class="btn btn-default"/>
+						</div>
+                         <div class="form-group">
+							 <label for="exampleInputOption">选项D</label>
+                            {{ form.manyChooseChooseD(class="form-control") }}
+                             <input Type="Submit" Name="action" Value="修改多选题选项D" class="btn btn-default"/>
+						</div>
+                        <div class="form-group">
+							 <label for="exampleInputAnswer">答案</label>
+                            {{ form.manyChooseAnswer(class="form-control") }}
+                            <input Type="Submit" Name="action" Value="修改多选题答案" class="btn btn-default"/>
+						</div>
+                        <div class="form-group">
+							 <label for="exampleInputCategory">类别</label>
+                            {{ form.manyChooseCategory(class="form-control") }}
+                            <input Type="Submit" Name="action" Value="修改多选题类别" class="btn btn-default"/>
+						</div>
+						<input Type="Submit" Name="action" Value="增加多选题" class="btn btn-default"/>
+                        <input Type="Submit" Name="action" Value="删除多选题" class="btn btn-default"/>
+
+                    </form>
+                     {% for message in get_flashed_messages() %}
+                            <div class="alert-info">{{ message }}</div>
+                        {% endfor %}
+                </div>
+                </div>
+            </div>
+         </div>
+     </form>
+    </div>
+     </div>
+  </body>
